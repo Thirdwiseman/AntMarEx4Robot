@@ -2,7 +2,7 @@ package Robot.Behaviours;
 
 import java.util.ArrayList;
 
-import Robot.RobotMove;
+import robotPuzzle.RobotMove;
 import lejos.nxt.LCD;
 import lejos.nxt.NXTRegulatedMotor;
 import lejos.nxt.SensorPort;
@@ -69,14 +69,14 @@ public class Junction implements Behavior {
 			if (pattern.get(0).getDir() == direction) {
 				left.rotate(100, true);
 				right.rotate(100);
-			} else if (pattern.get(0).getDir() == direction + 1) {
+			} else if (pattern.get(0).getDir() == direction + 1 || pattern.get(0).getDir() == direction -3) {
 				right.rotate(50, true);
 				left.rotate(440);
-				direction = (direction + 1)%4;
+				direction = (direction + 1) % 4;
 			}  else if (pattern.get(0).getDir() == direction -1) {
 				left.rotate(50, true);
 				right.rotate(440);
-				direction = (direction - 1)%4;
+				direction = (direction - 1 + 4) % 4;
 			}
 		} else {
 			Sound.setVolume(Sound.VOL_MAX);
@@ -89,3 +89,4 @@ public class Junction implements Behavior {
 
 	}
 }
+
