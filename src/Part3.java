@@ -1,9 +1,10 @@
 import java.util.ArrayList;
 
+import robotPuzzle.RobotMove;
+import robotPuzzle.RobotPuzzle;
 import util.Graph;
+import util.Search;
 import Robot.Position;
-import Robot.RobotMove;
-import Robot.RobotPuzzle;
 import Robot.Behaviours.Blockage;
 import Robot.Behaviours.DriveForwards;
 import Robot.Behaviours.FollowLineLeft;
@@ -23,7 +24,6 @@ import lejos.robotics.RangeFinder;
 import lejos.robotics.subsumption.Arbitrator;
 import lejos.robotics.subsumption.Behavior;
 import lejos.util.Delay;
-import util.Search;
 
 public class Part3 extends Robot.RobotDemoNoExit implements Runnable {
 
@@ -39,7 +39,6 @@ public class Part3 extends Robot.RobotDemoNoExit implements Runnable {
 	private int blackLeft;
 	private int x;
 	private int y;
-	private int dir = 0;
 	private int goalX;
 	private int goalY;
 
@@ -53,7 +52,6 @@ public class Part3 extends Robot.RobotDemoNoExit implements Runnable {
 
 			@Override
 			public void buttonPressed(Button b) {
-				dir = -1;
 			}
 			
 			@Override
@@ -65,7 +63,6 @@ public class Part3 extends Robot.RobotDemoNoExit implements Runnable {
 
 			@Override
 			public void buttonPressed(Button b) {
-				dir = 0;
 			}
 
 			@Override
@@ -77,7 +74,6 @@ public class Part3 extends Robot.RobotDemoNoExit implements Runnable {
 
 			@Override
 			public void buttonPressed(Button b) {
-				dir = 1;
 			}
 
 			@Override
@@ -88,7 +84,6 @@ public class Part3 extends Robot.RobotDemoNoExit implements Runnable {
 		Button.RIGHT.addButtonListener(new ButtonListener() {
 			@Override
 			public void buttonPressed(Button b) {
-				dir = 2;
 			}
 
 			@Override
@@ -117,8 +112,7 @@ public class Part3 extends Robot.RobotDemoNoExit implements Runnable {
 		Position pos = new Position(x, y , 0, goalX, goalY);
 
 		Search<RobotPuzzle, RobotMove> search = new Search<RobotPuzzle, RobotMove>(
-				2, new RobotPuzzle(g, pos.getX(), pos.getY(), pos.getGoalX(), pos.getGoalY()), 
-				new RobotPuzzle(g, pos.getGoalX(), pos.getGoalY(), pos.getY(), pos.getX()));
+				2, new RobotPuzzle(g, pos.getX(), pos.getY(), pos.getGoalX(), pos.getGoalY()));
 
 		System.out.println(pattern = search.findSolution());
 
