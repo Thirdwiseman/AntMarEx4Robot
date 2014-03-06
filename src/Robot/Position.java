@@ -17,21 +17,20 @@ private int goalY;
 		this.dir = dir;
 		this.goalX = goalX;
 		this.goalY = goalY;
-		/**
-		 * THE FOLLOWING TWO LINES WERE YOUR RESPONSIBILITY
-		 */
+
 		this.targetX = x;
 		this.targetY = y;
 	}
 	
 	public void turnRight()
 	{
-		dir = (dir + 1) % 4;
+		dir = (dir + 1 + 4) % 4;
+		
 	}
 	
 	public void turnLeft()
 	{
-		dir = (dir - 1) % 4;
+		dir = (dir - 1 + 4) % 4;
 	}
 	
 	public void move()
@@ -60,7 +59,17 @@ private int goalY;
 	}
 
 	public int getTargetX() {
+		if(dir == 1){
+			return x+1;
+		}
+		if(dir == 3){
+			return x-1;
+		}
+		if(dir == 0 || dir == 2){
+			return x;
+		}
 		return targetX;
+		
 	}
 
 	public void setTargetX(int targetX) {
@@ -68,6 +77,17 @@ private int goalY;
 	}
 
 	public int getTargetY() {
+		if(dir == 0){
+			return y+1;
+		}
+		if(dir == 2){
+			return y-1;
+		}
+		if(dir == 1 || dir == 3){
+			return y;
+		}
+		
+		
 		return targetY;
 	}
 
