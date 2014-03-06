@@ -1,8 +1,9 @@
 import java.util.ArrayList;
-
+import java.util.Random;
+import robotPuzzle.RobotMove;
+import robotPuzzle.RobotPuzzle;
 import util.Graph;
-import Robot.RobotMove;
-import Robot.RobotPuzzle;
+import util.Search;
 import Robot.Behaviours.DriveForwards;
 import Robot.Behaviours.FollowLineLeft;
 import Robot.Behaviours.FollowLineRight;
@@ -17,7 +18,6 @@ import lejos.nxt.SensorPort;
 import lejos.robotics.subsumption.Arbitrator;
 import lejos.robotics.subsumption.Behavior;
 import lejos.util.Delay;
-import util.Search;
 
 public class Part2 extends Robot.RobotDemoNoExit implements Runnable {
 
@@ -50,7 +50,6 @@ public class Part2 extends Robot.RobotDemoNoExit implements Runnable {
 			public void buttonReleased(Button b) {
 
 			}
-
 		});
 		Button.LEFT.addButtonListener(new ButtonListener() {
 
@@ -63,7 +62,6 @@ public class Part2 extends Robot.RobotDemoNoExit implements Runnable {
 			public void buttonReleased(Button b) {
 
 			}
-
 		});
 		Button.ENTER.addButtonListener(new ButtonListener() {
 
@@ -76,7 +74,6 @@ public class Part2 extends Robot.RobotDemoNoExit implements Runnable {
 			public void buttonReleased(Button b) {
 
 			}
-
 		});
 		Button.RIGHT.addButtonListener(new ButtonListener() {
 
@@ -89,16 +86,13 @@ public class Part2 extends Robot.RobotDemoNoExit implements Runnable {
 			public void buttonReleased(Button b) {
 
 			}
-
 		});
-
 	}
 
 	public static void main(String args[]) {
 		Part2 demo = new Part2();
 		Button.waitForAnyPress();
 		demo.run();
-
 	}
 
 	@Override
@@ -107,8 +101,6 @@ public class Part2 extends Robot.RobotDemoNoExit implements Runnable {
 		lightCalib();
 		Graph g = new Graph(10, 7);
 
-		g.createBlockage(1, 1, 2, 1);
-		
 		g.createBlockage(0, 1, 1, 1);
 		g.createBlockage(0, 2, 0, 3);
 		g.createBlockage(1, 0, 2, 0);
@@ -124,15 +116,22 @@ public class Part2 extends Robot.RobotDemoNoExit implements Runnable {
 		g.createBlockage(5, 5, 5, 6);
 		g.createBlockage(6, 4, 7, 4);
 		g.createBlockage(6, 5, 7, 5);
-
-		Search<RobotPuzzle, RobotMove> search = new Search<RobotPuzzle, RobotMove>(2, new RobotPuzzle(
-				g, 0, 0, 9, 6), new RobotPuzzle(g, 9, 6, 0, 0));
 		
-		System.out.println(pattern = search.findSolution());
+		Random ran = new Random();
+		int x, y;
+		x = ran.nextInt(10);
+		y = ran.nextInt(7);
 		
+		System.out.println("Place on: [" + x +","+y +"]");
 		
 		Button.waitForAnyPress();
 		System.out.println("Press button to go!");
+		
+		Search<RobotPuzzle, RobotMove> search = new Search<RobotPuzzle, RobotMove>(2, new RobotPuzzle(
+				g, x, y, 0, 0));
+		
+		System.out.println(pattern = search.findSolution());
+
 		Button.waitForAnyPress();
 		pilot.setTravelSpeed(MoveSpeed);
 		pilot.setRotateSpeed(MoveSpeed);
@@ -151,7 +150,6 @@ public class Part2 extends Robot.RobotDemoNoExit implements Runnable {
 		}
 		pattern.remove(0);
 
-		
 		Behavior[] behaviours = {
 				new DriveForwards(pilot),
 				new FollowLineLeft(wheelRight, SensorPort.S2, whiteLeft,
@@ -159,11 +157,10 @@ public class Part2 extends Robot.RobotDemoNoExit implements Runnable {
 				new FollowLineRight(wheelLeft, SensorPort.S4, whiteRight,
 						blackRight),
 				new Junction(Motor.B, Motor.C, whiteRight, whiteLeft,
-						blackRight, blackLeft, pattern, dir) };
-
+								blackRight, blackLeft, pattern, dir) };
+	
 		Arbitrator arby = new Arbitrator(behaviours);
 		arby.start();
-
 	}
 
 	public void lightCalib() {
@@ -177,3 +174,4 @@ public class Part2 extends Robot.RobotDemoNoExit implements Runnable {
 		whiteLeft = lightLeft.getLightValue();
 	}
 }
+
